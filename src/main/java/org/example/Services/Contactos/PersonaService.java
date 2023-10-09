@@ -28,6 +28,10 @@ public class PersonaService {
     public PersonaModels consultarPersonaPorId(int id){
         return  personasDB.consultarPersona(id);
     }
+    
+    public PersonaModels consultarPersonaPorDocumento(int documento){
+        return  personasDB.consultarPersonaPorDocumento(documento);
+    }
 
     private boolean validarDatos(PersonaModels persona) {
         try {

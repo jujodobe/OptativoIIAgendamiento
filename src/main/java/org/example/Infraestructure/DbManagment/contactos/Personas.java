@@ -83,5 +83,21 @@ public class Personas {
         }
         return null;
     }
+    public PersonaModels consultarPersonaPorDocumento(int documento){
+        PersonaModels persona = new PersonaModels();
+        try {
+            conexion.setQuerySQL(conexion.conexionDB().createStatement());
+            conexion.setResultadoQuery(conexion.getQuerySQL().executeQuery("Select * from persona where nrodocumento = " + documento));
+            if(conexion.getResultadoQuery().next()){
+                persona.Nombre = conexion.getResultadoQuery().getString("nombre");
+                persona.Apellido = conexion.getResultadoQuery().getString("apellido");
 
+
+                return persona;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
 }
