@@ -29,22 +29,22 @@ public class PersonaService {
         return  personasDB.consultarPersona(id);
     }
     
-    public PersonaModels consultarPersonaPorDocumento(int documento){
+    public PersonaModels consultarPersonaPorDocumento(String documento){
         return  personasDB.consultarPersonaPorDocumento(documento);
     }
 
     private boolean validarDatos(PersonaModels persona) {
         try {
-        if(persona.Nombre.trim().isEmpty())
-            throw new Exception("El nombre no debe estar vacío");
-        else if (persona.Nombre.trim().length() < 3) {
-            throw new Exception("El nombre no tiene la longitud necesaria");
-        }
+            if(persona.Nombre.trim().isEmpty())
+                throw new Exception("El nombre no debe estar vacío");
+            else if (persona.Nombre.trim().length() < 3) {
+                throw new Exception("El nombre no tiene la longitud necesaria");
+            }
 
-    } catch (Exception e) {
-        throw new RuntimeException(e);
-    }
-        return true;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+            return true;
     }
 
 }

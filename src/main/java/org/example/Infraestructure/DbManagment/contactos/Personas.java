@@ -4,6 +4,8 @@ import org.example.Infraestructure.Conections.Conexiones;
 import org.example.Infraestructure.Models.PersonaModels;
 
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Personas {
 
@@ -22,7 +24,7 @@ public class Personas {
                     "'nombre', " +
                     "'apellido', " +
                     "'tipodocumento', " +
-                    "'nrodocumento', " +
+                    "'nro_documento', " +
                     "'direccion'," +
                     "'celular', " +
                     "'email', " +
@@ -70,34 +72,43 @@ public class Personas {
         PersonaModels persona = new PersonaModels();
         try {
             conexion.setQuerySQL(conexion.conexionDB().createStatement());
-            conexion.setResultadoQuery(conexion.getQuerySQL().executeQuery("Select * from persona where idPersona = " + id));
+            conexion.setResultadoQuery(conexion.getQuerySQL().executeQuery("Select * from personas where id = " + id));
             if(conexion.getResultadoQuery().next()){
-                persona.Nombre = conexion.getResultadoQuery().getString("nombre");
-                persona.Apellido = conexion.getResultadoQuery().getString("apellido");
-
-
-                return persona;
+                return cargarDatosPersona(persona, conexion);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return null;
     }
-    public PersonaModels consultarPersonaPorDocumento(int documento){
+    public PersonaModels consultarPersonaPorDocumento(String documento){
         PersonaModels persona = new PersonaModels();
         try {
             conexion.setQuerySQL(conexion.conexionDB().createStatement());
-            conexion.setResultadoQuery(conexion.getQuerySQL().executeQuery("Select * from persona where nrodocumento = " + documento));
+            conexion.setResultadoQuery(conexion.getQuerySQL().executeQuery("Select * from personas where nroDocumento = '" + documento + "'"));
             if(conexion.getResultadoQuery().next()){
-                persona.Nombre = conexion.getResultadoQuery().getString("nombre");
-                persona.Apellido = conexion.getResultadoQuery().getString("apellido");
-
-
-                return persona;
+                return cargarDatosPersona(persona, conexion);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return null;
+    }
+    
+    private PersonaModels cargarDatosPersona(PersonaModels persona, Conexiones conexion){
+        try {
+            persona.IdPersona = conexion.getResultadoQuery().getInt("id");
+            persona.Nombre = conexion.getResultadoQuery().getString("nombre");
+            persona.Apellido = conexion.getResultadoQuery().getString("apellido");
+            persona.TipoDocumento = conexion.getResultadoQuery().getString("TipoDocumento");
+            persona.NroDocumento = conexion.getResultadoQuery().getString("nroDocumento");
+            persona.Direccion = conexion.getResultadoQuery().getString("direccion");
+            persona.Email = conexion.getResultadoQuery().getString("email");
+            persona.Celular = conexion.getResultadoQuery().getString("celular");
+            return persona;
+        } catch (SQLException ex) {
+            Logger.getLogger(Personas.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
     }
 }

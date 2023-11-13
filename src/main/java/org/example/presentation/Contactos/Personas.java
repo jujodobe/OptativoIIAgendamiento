@@ -29,14 +29,13 @@ public class Personas extends javax.swing.JFrame {
                 cargarDatos(personaService.consultarPersonaPorId(Integer.parseInt(filtro)));
                 break;
             case "documento":
-                cargarDatos(personaService.consultarPersonaPorDocumento(Integer.parseInt(filtro)));
-            default:
-                throw new AssertionError();
+                cargarDatos(personaService.consultarPersonaPorDocumento(filtro));
         }
-        
+                                                                                                                                                      
     }
     
     private void cargarDatos(PersonaModels model){
+        txtIdPersona.setText(String.valueOf(model.IdPersona));
         txtNombre.setText(model.Nombre);
         txtApellido.setText(model.Apellido);
         cbTipoDocumento.setSelectedItem(model.TipoDocumento);
@@ -80,7 +79,7 @@ public class Personas extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         dateFechaNacimiento = new com.toedter.calendar.JDateChooser();
         Cancelar = new javax.swing.JButton();
-        Cancelar1 = new javax.swing.JButton();
+        Salir = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -152,12 +151,12 @@ public class Personas extends javax.swing.JFrame {
             }
         });
 
-        Cancelar1.setBackground(new java.awt.Color(204, 51, 0));
-        Cancelar1.setForeground(new java.awt.Color(255, 255, 255));
-        Cancelar1.setText("Salir");
-        Cancelar1.addActionListener(new java.awt.event.ActionListener() {
+        Salir.setBackground(new java.awt.Color(204, 51, 0));
+        Salir.setForeground(new java.awt.Color(255, 255, 255));
+        Salir.setText("Salir");
+        Salir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Cancelar1ActionPerformed(evt);
+                SalirActionPerformed(evt);
             }
         });
 
@@ -211,7 +210,7 @@ public class Personas extends javax.swing.JFrame {
                         .addGap(9, 9, 9)
                         .addComponent(Cancelar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(Cancelar1)))
+                        .addComponent(Salir)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -264,7 +263,7 @@ public class Personas extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(botonAceptar)
                     .addComponent(Cancelar)
-                    .addComponent(Cancelar1))
+                    .addComponent(Salir))
                 .addContainerGap())
         );
 
@@ -281,17 +280,30 @@ public class Personas extends javax.swing.JFrame {
 
     private void txtIdPersonaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIdPersonaKeyPressed
         if(evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER){
-            ConsultarCliente("id", txtIdPersona.getText().trim());
+            if(txtIdPersona.getText().trim().length() > 0){
+                ConsultarCliente("id", txtIdPersona.getText().trim());            
+            }
+            else{
+                JOptionPane.showMessageDialog(
+                        null, 
+                        "Se necesita un valor ID para la busqueda...", 
+                        "Advertencia", 
+                        JOptionPane.WARNING_MESSAGE);
+            }
         }
     }//GEN-LAST:event_txtIdPersonaKeyPressed
 
     private void CancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelarActionPerformed
-        // TODO add your handling code here:
+        if(JOptionPane.showConfirmDialog(null, "Deseas cancelar la operación??") == JOptionPane.YES_OPTION){
+             Setear();
+        }
     }//GEN-LAST:event_CancelarActionPerformed
 
-    private void Cancelar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Cancelar1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_Cancelar1ActionPerformed
+    private void SalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SalirActionPerformed
+        if(JOptionPane.showConfirmDialog(null, "Deseas cerrar el formulario de personas??") == JOptionPane.YES_OPTION){
+            this.dispose();
+        }
+    }//GEN-LAST:event_SalirActionPerformed
 
     private void txtNroDocumentoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNroDocumentoKeyPressed
        if(evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER){
@@ -299,7 +311,15 @@ public class Personas extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_txtNroDocumentoKeyPressed
 
-    
+    private void Setear(){
+        txtApellido.setText("");
+        txtNombre.setText("");
+        cbTipoDocumento.setSelectedIndex(0);
+        txtDireccion.setText("");
+        txtEmail.setText("");
+        txtCelular.setText("");
+        txtNroDocumento.setText("");
+    }
     
     
     
@@ -340,7 +360,7 @@ public class Personas extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Cancelar;
-    private javax.swing.JButton Cancelar1;
+    private javax.swing.JButton Salir;
     private javax.swing.JButton botonAceptar;
     private javax.swing.JButton btnModelBuscarPersonas;
     private javax.swing.JComboBox<String> cbTipoDocumento;
